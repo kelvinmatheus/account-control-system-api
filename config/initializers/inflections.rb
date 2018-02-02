@@ -14,3 +14,9 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+
+# These inflection rules are supported but not enabled by default:
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.acronym 'API'
+  inflect.irregular 'legal_person', 'legal_people'
+end
