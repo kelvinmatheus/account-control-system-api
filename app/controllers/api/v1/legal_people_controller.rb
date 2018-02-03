@@ -38,8 +38,6 @@ module API
       # DELETE /legal_people/1
       def destroy
         @legal_person.destroy
-
-
       end
 
       private
