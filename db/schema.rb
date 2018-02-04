@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180129035141) do
+ActiveRecord::Schema.define(version: 20180203221715) do
+
+  create_table "juridical_people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "cnpj", limit: 14, null: false
+    t.string "company_name", limit: 70, null: false
+    t.string "fantasy_name", limit: 70, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "legal_people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "cpf", limit: 11, null: false

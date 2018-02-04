@@ -19,4 +19,5 @@
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym 'API'
   inflect.irregular 'legal_person', 'legal_people'
+  inflect.irregular 'juridical_person', 'juridical_people'
 end
