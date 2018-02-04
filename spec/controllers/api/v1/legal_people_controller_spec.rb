@@ -4,7 +4,7 @@ RSpec.describe API::V1::LegalPeopleController, type: :controller do
 
   before { @request.host = 'api.example.com' }
   before do
-    headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json'.to_s }
+    headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
     request.headers.merge! headers
   end
 
@@ -16,7 +16,7 @@ RSpec.describe API::V1::LegalPeopleController, type: :controller do
     it_behaves_like 'GET #index', LegalPerson do
       let(:params) { {} }
       let(:expected_object) { legal_person }
-      let(:expected_object_attribute) { 'cpf' }
+      let(:expected_object_attribute) { :cpf }
     end
   end
 
@@ -24,7 +24,7 @@ RSpec.describe API::V1::LegalPeopleController, type: :controller do
     it_behaves_like 'GET #show', LegalPerson do
       let(:params) { { id: legal_person.to_param } }
       let(:expected_object) { legal_person }
-      let(:expected_object_attribute) { 'cpf' }
+      let(:expected_object_attribute) { :cpf }
     end
   end
 
