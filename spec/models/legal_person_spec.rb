@@ -7,7 +7,7 @@ RSpec.describe LegalPerson, type: :model do
     context ':cpf' do
       it { should validate_presence_of(:cpf) }
       it { should validate_uniqueness_of(:cpf).case_insensitive }
-      it { should validate_numericality_of(:cpf) }
+      it { should validate_numericality_of(:cpf).only_integer }
       it { should validate_length_of(:cpf).is_equal_to(11) }
     end
 
@@ -31,5 +31,9 @@ RSpec.describe LegalPerson, type: :model do
       end
 
     end
+  end
+
+  describe 'Associations' do
+    it { should have_many(:accounts) }
   end
 end

@@ -1,4 +1,6 @@
 class LegalPerson < ApplicationRecord
+  has_many :accounts, as: :person
+
   validates :cpf, presence: true,
                   uniqueness: true,
                   numericality: { only_integer: true },

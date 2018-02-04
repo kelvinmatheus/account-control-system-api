@@ -14,7 +14,7 @@ RSpec.shared_examples 'POST #create' do |klass|
       end
     end
 
-    it 'creates a new LegalPerson' do
+    it "creates a new #{klass.to_s}" do
       expect {
         post :create, body: valid_params.to_json
       }.to change(klass, :count).by(1)
@@ -34,7 +34,7 @@ RSpec.shared_examples 'POST #create' do |klass|
       end
     end
 
-    it 'does not create a new legal_person' do
+    it "does not create a new #{klass.to_s}" do
       expect {
         post :create, body: invalid_params.to_json
       }.not_to change(klass, :count)
