@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180204192849) do
+ActiveRecord::Schema.define(version: 20180204235120) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 70, null: false
@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(version: 20180204192849) do
     t.integer "status", limit: 1, default: 2, null: false
     t.string "person_type"
     t.bigint "person_id"
+    t.string "ancestry"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["ancestry"], name: "index_accounts_on_ancestry"
     t.index ["name"], name: "index_name_unique", unique: true
     t.index ["person_type", "person_id"], name: "index_accounts_on_person_type_and_person_id"
   end
