@@ -7,7 +7,7 @@ RSpec.describe JuridicalPerson, type: :model do
     context ':cnpj' do
       it { should validate_presence_of(:cnpj) }
       it { should validate_uniqueness_of(:cnpj).case_insensitive }
-      it { should validate_numericality_of(:cnpj) }
+      it { should validate_numericality_of(:cnpj).only_integer }
       it { should validate_length_of(:cnpj).is_equal_to(14) }
     end
 
@@ -24,5 +24,9 @@ RSpec.describe JuridicalPerson, type: :model do
       it { should_not allow_value('Fantasy $5 Name #@!').for(:fantasy_name) }
       it { should validate_length_of(:fantasy_name).is_at_least(2).is_at_most(70) }
     end
+  end
+
+  describe 'Associations' do
+    it { should have_many(:accounts) }
   end
 end

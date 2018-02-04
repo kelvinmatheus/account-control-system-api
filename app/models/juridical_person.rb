@@ -1,4 +1,6 @@
 class JuridicalPerson < ApplicationRecord
+  has_many :accounts, as: :person
+
   validates :cnpj, presence: true,
                    uniqueness: true,
                    numericality: { only_integer: true },

@@ -7,5 +7,7 @@ class CreateJuridicalPeople < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+
+    add_index 'juridical_people', [:cnpj], name: 'index_cnpj_unique', unique: true
   end
 end

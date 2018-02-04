@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180203221715) do
+ActiveRecord::Schema.define(version: 20180204192849) do
+
+  create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", limit: 70, null: false
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0", null: false
+    t.integer "status", limit: 1, default: 2, null: false
+    t.string "person_type"
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_name_unique", unique: true
+    t.index ["person_type", "person_id"], name: "index_accounts_on_person_type_and_person_id"
+  end
 
   create_table "juridical_people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "cnpj", limit: 14, null: false
@@ -18,6 +30,7 @@ ActiveRecord::Schema.define(version: 20180203221715) do
     t.string "fantasy_name", limit: 70, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["cnpj"], name: "index_cnpj_unique", unique: true
   end
 
   create_table "legal_people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

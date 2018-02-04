@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :legal_people
       resources :juridical_people
+      resources :accounts
     end
   end
 end
