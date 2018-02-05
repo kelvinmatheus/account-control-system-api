@@ -53,7 +53,7 @@ module API
 
       # Only allow a trusted parameter "white list" through.
       def account_params
-        params.require(:account).permit(:name, :balance, :status, :person_type, :person_id)
+        params.require(:account).permit(:name, :balance, :status, :person_type, :person_id, :ancestry)
       end
     end
 

@@ -1,6 +1,8 @@
 class Account < ApplicationRecord
   enum status:  %i[canceled actived blocked]
 
+  has_ancestry
+
   belongs_to :person, polymorphic: true
 
   validates :name, presence: true,
