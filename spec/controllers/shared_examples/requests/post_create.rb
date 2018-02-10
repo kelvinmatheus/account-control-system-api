@@ -1,7 +1,7 @@
 RSpec.shared_examples 'POST #create' do |klass|
   context 'with valid params' do
     context 'and correct response header' do
-      before { post :create, body: valid_params.to_json }
+      before { post :create, params: valid_params }
 
       context 'returns expected status code' do
         it_behaves_like '204 - :created'
@@ -16,14 +16,14 @@ RSpec.shared_examples 'POST #create' do |klass|
 
     it "creates a new #{klass.to_s}" do
       expect {
-        post :create, body: valid_params.to_json
+        post :create, params: valid_params
       }.to change(klass, :count).by(1)
     end
   end
 
   context 'with invalid params' do
     context 'and correct response header' do
-      before { post :create, body: invalid_params.to_json }
+      before { post :create, params: invalid_params }
 
       context 'returns expected status code' do
         it_behaves_like '422 - :unprocessable_entity'
@@ -36,7 +36,7 @@ RSpec.shared_examples 'POST #create' do |klass|
 
     it "does not create a new #{klass.to_s}" do
       expect {
-        post :create, body: invalid_params.to_json
+        post :create, params: invalid_params
       }.not_to change(klass, :count)
     end
   end

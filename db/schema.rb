@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180204235120) do
+ActiveRecord::Schema.define(version: 20180205022309) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 70, null: false
@@ -44,4 +44,21 @@ ActiveRecord::Schema.define(version: 20180204235120) do
     t.index ["cpf"], name: "index_cpf_unique", unique: true
   end
 
+  create_table "transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "transactional_code", null: false
+    t.integer "type", limit: 1, null: false
+    t.decimal "value", precision: 10, scale: 2, null: false
+    t.bigint "origin_account_id", null: false
+    t.decimal "origin_account_value_before_transaction", precision: 10, scale: 2, null: false
+    t.bigint "destination_account_id"
+    t.decimal "destination_account_value_before_transaction", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["destination_account_id"], name: "index_transactions_on_destination_account_id"
+    t.index ["origin_account_id"], name: "index_transactions_on_origin_account_id"
+    t.index ["transactional_code"], name: "index_transactional_code_unique", unique: true
+  end
+
+  add_foreign_key "transactions", "accounts", column: "destination_account_id"
+  add_foreign_key "transactions", "accounts", column: "origin_account_id"
 end

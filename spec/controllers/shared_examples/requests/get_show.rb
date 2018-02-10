@@ -2,9 +2,15 @@ RSpec.shared_examples 'GET #show' do |klass|
   context 'with valid id' do
     before { get :show, params: params }
 
-    it 'returns a legal person valid' do
+    it "returns a #{klass.to_s.underscore.to_sym}" do
       objects_response = symbolize_json(response.body)
-      expect(objects_response[expected_object_attribute.to_sym]).to eq(expected_object.try(expected_object_attribute.to_sym))
+
+      if objects_response.is_a?(Array)
+        expect(objects_response.first[expected_object_attribute.to_sym]).to eq(expected_object.try(expected_object_attribute.to_sym))
+      else
+        expect(objects_response[expected_object_attribute.to_sym]).to eq(expected_object.try(expected_object_attribute.to_sym))
+      end
+
     end
 
     context 'returns expected status code' do
@@ -17,7 +23,13 @@ RSpec.shared_examples 'GET #show' do |klass|
   end
 
   context 'with invalid id' do
-    before { get :show, params: { id: 0 } }
+    before do
+      if defined?(invalid_params)
+        get :show, params: invalid_params
+      else
+        get :show, params: { id: 0 }
+      end
+    end
 
     it_behaves_like '404 - :not_found'
   end
