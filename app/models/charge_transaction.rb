@@ -6,7 +6,7 @@ class ChargeTransaction < Transaction
 
     begin
       ActiveRecord::Base.transaction do
-        self.origin_account.deposit(self.value).save
+        self.origin_account.deposit(self.value)
         self.save
       end
 
@@ -32,7 +32,7 @@ class ChargeTransaction < Transaction
     errors.add(:destination_account_id, :not_blank, message: 'cannot be provided') if destination_account_id
     errors.add(:destination_account_value_before_transaction, :not_blank, message: 'cannot be provided') if destination_account_value_before_transaction
     errors.add(:origin_account, :blank) unless origin_account
-    errors.add(:origin_account, :not_blocked, message: 'should be blocked') if origin_account && !origin_account.blocked?
+    errors.add(:origin_account, :not_activated, message: 'should be activated') if origin_account && !origin_account.activated?
 
     return true if errors.messages.blank?
     false

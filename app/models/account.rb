@@ -1,8 +1,9 @@
 class Account < ApplicationRecord
   enum status:  %i[canceled activated blocked]
 
-  has_ancestry
+  after_initialize :set_default_values, if: :new_record?
 
+  has_ancestry
   belongs_to :person, polymorphic: true
   has_many :transactions, foreign_key: 'origin_account_id'
 
@@ -41,17 +42,57 @@ class Account < ApplicationRecord
   end
 
   def deposit(value)
-    return self unless value_valid?(value)
+    return false unless value_can_be_deposit?(value)
 
     self.balance += value
+    save
+    self
+  end
+
+  def withdraw(value)
+    return false unless value_can_be_withdraw?(value)
+
+    self.balance -= value
+    save
+    self
+  end
+
+  def unblock
+    return false unless can_be_unblocked?
+
+    update_attribute(:status, :activated)
+    reload
     self
   end
 
   private
 
-  def value_valid?(value)
+  def set_default_values
+    self.status = :blocked
+    self.balance = 0
+  end
+
+  def value_can_be_deposit?(value)
     unless value > 0
       errors.add(:value, message: 'should be greater than 0.')
+      return false
+    end
+
+    true
+  end
+
+  def value_can_be_withdraw?(value)
+    unless value <= balance
+      errors.add(:balance, message: 'is less than 0 after withdraw.')
+      return false
+    end
+
+    true
+  end
+
+  def can_be_unblocked?
+    unless status == 'blocked'
+      errors.add(:status, message: 'only blocked accounts can be unblocked.')
       return false
     end
 

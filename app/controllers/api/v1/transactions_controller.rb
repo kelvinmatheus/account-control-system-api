@@ -23,6 +23,7 @@ module API
         @transaction =
           case params[:transaction][:type]
             when 'charge' then ChargeTransaction.new(charge_transaction_params)
+            when 'transfer' then TransferTransaction.new(transfer_transaction_params)
             else
               OpenStruct.new(errors: { type: [message: 'must be valid '] }.to_json, perform?: false)
           end
@@ -52,8 +53,14 @@ module API
       end
 
       # Only allow a trusted parameter "white list" through.
-      # #
       def charge_transaction_params
+        params.require(:transaction).permit(
+          :transactional_code, :type, :value, :origin_account_id, :destination_account_id
+        )
+      end
+
+      # Only allow a trusted parameter "white list" through.
+      def transfer_transaction_params
         params.require(:transaction).permit(
           :transactional_code, :type, :value, :origin_account_id, :destination_account_id
         )
