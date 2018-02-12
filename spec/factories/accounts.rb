@@ -18,7 +18,7 @@ FactoryBot.define do
       id { 0 }
       nome { '' }
       saldo { nil }
-      status { 2 }
+      status { 0 }
 
       factory :invalid_legal_person_account do
         person_type { nil }
@@ -29,6 +29,18 @@ FactoryBot.define do
         person_type { nil }
         person_id { nil }
       end
+    end
+
+    trait :canceled do
+      status { 0 }
+    end
+
+    trait :activated do
+      status { 1 }
+    end
+
+    trait :blocked do
+      status { 2 }
     end
   end
 end

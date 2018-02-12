@@ -61,11 +61,11 @@ module API
 
       # Only allow a trusted parameter "white list" through.
       def account_params
-        params.require(:account).permit(:name, :person_type, :person_id, :ancestry)
+        params.require(:account).permit(:name, :person_type, :person_id, :ancestry_id)
       end
 
       def update_account_params
-        params.require(:account).permit(:name, :ancestry)
+        params.require(:account).permit(:name, :ancestry_id)
       end
 
     end

@@ -13,7 +13,7 @@ RSpec.describe API::V1::TransactionsController, type: :controller do
     let!(:valid_attributes) { attributes_for(:charge_transaction, :valid_attributes) }
     let!(:invalid_attributes) { attributes_for(:charge_transaction, :invalid_attributes) }
 
-    let!(:account) { create(:valid_legal_person_account) }
+    let!(:account) { create(:valid_legal_person_account, :activated) }
 
     context 'GET #index' do
       it_behaves_like 'GET #index', ChargeTransaction do

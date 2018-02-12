@@ -1,7 +1,11 @@
 class Account < ApplicationRecord
+  attr_accessor :ancestry_id
+
   enum status:  %i[canceled activated blocked]
 
   after_initialize :set_default_values, if: :new_record?
+  before_update :can_be_updated?
+  validate :ancestry_valid?
 
   has_ancestry
   belongs_to :person, polymorphic: true
@@ -42,7 +46,7 @@ class Account < ApplicationRecord
   end
 
   def deposit(value)
-    return false unless value_can_be_deposit?(value)
+    return false unless value_can_be_deposited?(value)
 
     self.balance += value
     save
@@ -50,7 +54,7 @@ class Account < ApplicationRecord
   end
 
   def withdraw(value)
-    return false unless value_can_be_withdraw?(value)
+    return false unless value_can_be_withdrawn?(value)
 
     self.balance -= value
     save
@@ -68,11 +72,11 @@ class Account < ApplicationRecord
   private
 
   def set_default_values
-    self.status = :blocked
+    self.status = 'blocked'
     self.balance = 0
   end
 
-  def value_can_be_deposit?(value)
+  def value_can_be_deposited?(value)
     unless value > 0
       errors.add(:value, message: 'should be greater than 0.')
       return false
@@ -81,7 +85,7 @@ class Account < ApplicationRecord
     true
   end
 
-  def value_can_be_withdraw?(value)
+  def value_can_be_withdrawn?(value)
     unless value <= balance
       errors.add(:balance, message: 'is less than 0 after withdraw.')
       return false
@@ -91,11 +95,65 @@ class Account < ApplicationRecord
   end
 
   def can_be_unblocked?
-    unless status == 'blocked'
+    unless blocked?
       errors.add(:status, message: 'only blocked accounts can be unblocked.')
       return false
     end
 
     true
+  end
+
+  def can_be_updated?
+    unless activated?
+      errors.add(:account, message: 'can only be updated if it is activated.')
+      return false
+    end
+
+    true
+  end
+
+  def ancestry_valid?
+    return true if ancestry_id.blank?
+
+    ancestry_account = Account.find_by(id: valid_ancestry_id(ancestry_id))
+
+    unless ancestry_account
+      errors.add(:ancestry_account, message: 'should exist.')
+      return false
+    end
+
+    if ancestry_is_itself?(ancestry_account)
+      errors.add(:ancestry_account, message: 'should not be itself.')
+      return false
+    end
+
+    if ancestry_is_account_descendant?(ancestry_account)
+      errors.add(:ancestry_account, message: 'should not be account descendant.')
+      return false
+    end
+
+    if ancestry_account && !ancestry_is_same_hierarchy?(ancestry_account) && ancestry
+      errors.add(:ancestry_account, message: 'should be in the same hierarchy.')
+      return false
+    end
+
+    self.parent = ancestry_account
+    true
+  end
+
+  def valid_ancestry_id(ancestry_id)
+    ancestry_id.to_s.split('/').last
+  end
+
+  def ancestry_is_itself?(ancestry_account)
+    ancestry_account.id == id
+  end
+
+  def ancestry_is_same_hierarchy?(ancestry_account)
+    ancestry_account.root_id == root_id
+  end
+
+  def ancestry_is_account_descendant?(ancestry_account)
+    descendant_ids.include?(ancestry_account.id)
   end
 end

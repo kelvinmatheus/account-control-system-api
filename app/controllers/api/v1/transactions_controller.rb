@@ -54,16 +54,12 @@ module API
 
       # Only allow a trusted parameter "white list" through.
       def charge_transaction_params
-        params.require(:transaction).permit(
-          :transactional_code, :type, :value, :origin_account_id, :destination_account_id
-        )
+        params.require(:transaction).permit(:type, :value).merge(origin_account_id: @account.id)
       end
 
       # Only allow a trusted parameter "white list" through.
       def transfer_transaction_params
-        params.require(:transaction).permit(
-          :transactional_code, :type, :value, :origin_account_id, :destination_account_id
-        )
+        params.require(:transaction).permit(:type, :value, :destination_account_id).merge(origin_account_id: @account.id)
       end
     end
 
