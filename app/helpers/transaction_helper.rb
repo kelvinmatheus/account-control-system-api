@@ -11,9 +11,10 @@ module TransactionHelper
         end
 
       origem_account_id = transaction.origin_account_id.to_s
+      destination_account_id = transaction.destination_account_id.to_s
       type = transaction.type.to_s
 
-      data_to_encrypt = date + origem_account_id + type
+      data_to_encrypt = date + origem_account_id + type + destination_account_id
 
       Digest::MD5.hexdigest(data_to_encrypt)
     end

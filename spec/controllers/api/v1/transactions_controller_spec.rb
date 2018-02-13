@@ -42,4 +42,49 @@ RSpec.describe API::V1::TransactionsController, type: :controller do
     end
   end
 
+  context 'Transfer Transaction' do
+    let!(:account) { create(:valid_legal_person_account, :activated, balance: 1000) }
+    let!(:matrix_account) { create(:valid_legal_person_account, :activated, balance: 1000) }
+    let!(:subsidiary_account) { create(:valid_legal_person_account, :activated, balance: 1000, ancestry: matrix_account.id) }
+    let!(:valid_attributes) { attributes_for(:transfer_transaction_matrix, destination_account_id: subsidiary_account.id, value: 500) }
+    let!(:valid_attributes_matrix_destination) { attributes_for(:transfer_transaction_matrix, destination_account_id: matrix_account.id, value: 500) }
+
+    let!(:invalid_attributes) { attributes_for(:transfer_transaction_matrix, destination_account_id: subsidiary_account.id, value: 500) }
+
+    describe 'POST #create' do
+      context 'with valid attributes' do
+        context 'and same hierarchy' do
+          it 'should transfer value to account' do
+            expect {
+              post :create, params: { account_id: matrix_account.id, transaction: valid_attributes }
+            }.to change(Transaction, :count).by(1)
+
+            expect(matrix_account.reload.balance.to_f).to eq(500)
+            expect(subsidiary_account.reload.balance.to_f).to eq(1500)
+          end
+
+          it 'should not transfer value to matrix account' do
+            expect {
+              post :create, params: { account_id: subsidiary_account.id, transaction: valid_attributes_matrix_destination }
+            }.not_to change(Transaction, :count)
+
+            expect(matrix_account.reload.balance.to_f).to eq(1000)
+            expect(subsidiary_account.reload.balance.to_f).to eq(1000)
+          end
+        end
+
+        context 'and different hierarchy' do
+          it 'should not transfer value to account' do
+            expect {
+              post :create, params: { account_id: account.id, transaction: valid_attributes }
+            }.not_to change(Transaction, :count)
+
+            expect(matrix_account.reload.balance.to_f).to eq(1000)
+            expect(subsidiary_account.reload.balance.to_f).to eq(1000)
+          end
+        end
+      end
+    end
+
+  end
 end

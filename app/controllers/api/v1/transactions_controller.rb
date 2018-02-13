@@ -18,8 +18,6 @@ module API
 
       # POST /transactions
       def create
-        # @transaction = Transaction.new(transaction_params)
-
         @transaction =
           case params[:transaction][:type]
             when 'charge' then ChargeTransaction.new(charge_transaction_params)
