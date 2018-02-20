@@ -1,7 +1,7 @@
 module API
   module V1
     class AccountsController < ApplicationController
-      before_action :set_account, only: [:show, :update, :destroy]
+      before_action :set_account, only: [:show, :update, :destroy, :unblock]
 
       # GET /accounts
       def index
@@ -42,6 +42,14 @@ module API
         head 204
       end
 
+      def unblock
+        if @account.unblock
+          render json: @account, status: 200
+        else
+          render json: @account.errors, status: 422
+        end
+      end
+
       private
       # Use callbacks to share common setup or constraints between actions.
       def set_account
@@ -53,8 +61,13 @@ module API
 
       # Only allow a trusted parameter "white list" through.
       def account_params
-        params.require(:account).permit(:name, :balance, :status, :person_type, :person_id, :ancestry)
+        params.require(:account).permit(:name, :person_type, :person_id, :ancestry_id)
       end
+
+      def update_account_params
+        params.require(:account).permit(:name, :ancestry_id)
+      end
+
     end
 
   end

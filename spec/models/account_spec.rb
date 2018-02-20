@@ -18,7 +18,7 @@ RSpec.describe Account, type: :model do
 
     context ':status' do
       it { should validate_presence_of(:status) }
-      it { should define_enum_for(:status).with(%i[canceled actived blocked]) }
+      it { should define_enum_for(:status).with(%i[canceled activated blocked]) }
     end
 
     context ':person_type' do
