@@ -1,6 +1,7 @@
 class Account < ApplicationRecord
   attr_accessor :ancestry_id
 
+  paginates_per 10
   enum status:  %i[canceled activated blocked]
 
   after_initialize :set_default_values, if: :new_record?
@@ -29,8 +30,8 @@ class Account < ApplicationRecord
     Transaction.where('origin_account_id = ? || destination_account_id = ?', id, id)
   end
 
-  def find_transaction(account_id)
-    Transaction.where('(origin_account_id = ? || destination_account_id = ?) && id = ?', id, id, account_id).first!
+  def find_transaction(transaction_id)
+    Transaction.where('(origin_account_id = ? || destination_account_id = ?) && id = ?', id, id, transaction_id).first!
   end
 
   def activated?

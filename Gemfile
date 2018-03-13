@@ -19,6 +19,8 @@ gem 'puma', '~> 3.7'                                                            
 gem 'validates_timeliness', '~> 4.0'                                              # Date and time validation plugin for ActiveModel and Rails. Supports multiple ORMs and allows custom date/time formats. Read more: https://github.com/adzap/validates_timeliness
 
 gem 'ancestry'                                                                    # Organise ActiveRecord model into a tree structure. Read more: https://github.com/stefankroes/ancestry
+gem 'kaminari'                                                                    # ⚡ A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for Ruby webapps
+gem 'api-pagination'                                                              # Paginate in your headers, not in your response body. This follows the proposed RFC-5988 standard for Web linking. Read more: https://github.com/davidcelis/api-pagination
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]                             # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,6 +1,7 @@
 class Transaction < ApplicationRecord
   self.inheritance_column = :_type_disabled
 
+  paginates_per 10
   enum type: %i[charge transfer]
 
   belongs_to :origin_account, class_name: 'Account', foreign_key: 'origin_account_id'

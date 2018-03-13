@@ -6,9 +6,9 @@ module API
 
       # GET /transactions
       def index
-        @transactions = @account.transactions
+        @transactions = @account.transactions.page(params[:page])
 
-        render json: @transactions
+        paginate json: @transactions
       end
 
       # GET /transactions/1
