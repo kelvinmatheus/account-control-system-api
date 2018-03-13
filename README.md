@@ -16,7 +16,7 @@ The complete solution (database scripts and any other artifacts needed to run th
 
 Its programming logic, project structuring, code quality and solution to the proposed problem will be evaluated. Do the best!
 
-** Watch for web searches! ** Because it is a distance test, you will have free research, but explanations about the code may be requested by phone or in person.
+**Watch for web searches!** Because it is a distance test, you will have free research, but explanations about the code may be requested by phone or in person.
 
 ## Need to be solved: Account control system
 
@@ -64,11 +64,15 @@ Only Active Accounts can receive Charges or Transfers.
 
 ### Transactions Types
 
-charge - deposit money in an account.
+#### First Phase
 
-transfer - withdraw money from an account and deposit it to another.
+**charge** - deposit money in an account.
 
-reversal - transactions can be reversed (in case of a refund of a Contribution it is necessary to inform the alphanumeric code so that the transaction can be reversed).
+**transfer** - withdraw money from an account and deposit it to another.
+
+#### Second Phase
+
+**reversal** - transactions can be reversed (in case of a refund of a Contribution it is necessary to inform the alphanumeric code so that the transaction can be reversed).
 
 ## Account situation
 
@@ -95,10 +99,6 @@ Contribution - Entry of values (deposit/credit) ​​directly into the Matrix A
 
 Transfer - Amounts of money moved between accounts, where one is debited and the other is credited.
 
-### Type of transactions
-
-...
-
 ### Person and Company terms
 
 #### Legal person
@@ -117,5 +117,3 @@ Transfer - Amounts of money moved between accounts, where one is debited and the
 **Company Name** is the business name of your company. Also known as Commercial Name, Corporate Name or Business Firm is the name given to the legal entity, which appears in legal documents, contracts and deeds. In addition to representing the birth of a company.
 
 **Fantasy Name** is the business or popular name of the company, which may be the same or an abbreviation of the company name, but may also be completely different.
-
-
