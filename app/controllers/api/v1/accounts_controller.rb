@@ -5,9 +5,9 @@ module API
 
       # GET /accounts
       def index
-        @accounts = Account.all
+        @accounts = Account.page(params[:page])
 
-        render json: @accounts, status: 200
+        paginate json: @accounts, status: 200
       end
 
       # GET /accounts/1
@@ -28,7 +28,7 @@ module API
 
       # PATCH/PUT /accounts/1
       def update
-        if @account.update(account_params)
+        if @account.update(update_account_params)
           render json: @account, status: 200
         else
           render json: @account.errors, status: 422
@@ -61,7 +61,7 @@ module API
 
       # Only allow a trusted parameter "white list" through.
       def account_params
-        params.require(:account).permit(:name, :person_type, :person_id, :ancestry_id)
+        params.require(:account).permit(:name, :person_type, :person_id)
       end
 
       def update_account_params
